@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerMovement2 : MonoBehaviour
 {
     private Rigidbody2D rb;
+
+    public GameManager gameManager;
     public float moveSpeed = 5f;
   
     public AudioSource powerupSound;
@@ -69,19 +71,17 @@ private void OnTriggerEnter2D(Collider2D collision)
     } 
 }
 
+// In your PlayerMovement script
 private void OnCollisionEnter2D(Collision2D collision)
 {
     if (collision.gameObject.CompareTag("Bomb1"))
     {
         deathSound.Play();
+        Debug.Log("Player 2 hit a bomb!");
         Destroy(gameObject);
         Destroy(collision.gameObject);
-        StartCoroutine(ReloadSceneAfterDelay(1f));
+        // Assuming you have a reference to a GameManager script
+        gameManager.ReloadSceneAfterDelay(2f);
     }
-}
-private IEnumerator ReloadSceneAfterDelay(float delay)
-{
-    yield return new WaitForSeconds(delay);
-    UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); // Restart the game
 }
 }
